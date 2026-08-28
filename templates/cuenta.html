@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cuenta mesa {{ mesa.numero }} · {{ config.nombre_tienda or "Cuenta" }}{% endblock %}
+
+{% block contenido %}
+<div class="pagina-centrada">
+<div class="comanda">
+    <p class="comanda__eyebrow">Cuenta</p>
+    <h1 class="comanda__titulo">
+        {{ config.nombre_tienda or "Tu cuenta" }}
+        <span>Mesa {{ mesa.numero }}</span>
+    </h1>
+
+    {% if cuenta['items'] %}
+    <div class="recibo">
+        {% for item in cuenta['items'] %}
+        <div class="recibo__fila">
+            <div>
+                <div class="recibo__item-nombre">{{ item.nombre }}</div>
+                <div class="recibo__item-cantidad">{{ item.cantidad }} x {{ item.precio|moneda }}</div>
+            </div>
+            <div class="recibo__item-subtotal">{{ (item.cantidad * item.precio)|moneda }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="recibo__total">
+        <span class="recibo__total-label">Total</span>
+        <span class="recibo__total-valor">{{ cuenta.total|moneda }}</span>
+    </div>
+    {% else %}
+    <p class="mensaje-vacio">Todavía no has pedido nada en esta mesa.</p>
+    {% endif %}
+
+    <a href="{{ url_for('menu', numero=mesa.numero) }}" class="btn-secundario" style="width:100%; justify-content:center; margin-top: 24px;">← Volver al menú</a>
+
+    <p class="comanda__pie">Solicita a tu mesero el pago cuando quieras</p>
+</div>
+</div>
+{% endblock %}

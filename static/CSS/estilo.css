@@ -411,3 +411,71 @@ body {
     border-color: var(--acento);
     color: var(--acento);
 }
+
+/* ===========================================================
+   CUENTA (recibo)
+   =========================================================== */
+
+.recibo {
+    margin: 22px 0;
+}
+
+.recibo__fila {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--borde);
+    font-size: 13px;
+}
+
+.recibo__fila:last-child {
+    border-bottom: none;
+}
+
+.recibo__item-nombre {
+    color: var(--texto);
+}
+
+.recibo__item-cantidad {
+    color: var(--texto-tenue);
+    font-family: var(--fuente-mono);
+    font-size: 12px;
+}
+
+.recibo__item-subtotal {
+    font-family: var(--fuente-mono);
+    color: var(--texto);
+    white-space: nowrap;
+}
+
+.recibo__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--borde);
+}
+
+.recibo__total-label {
+    font-family: var(--fuente-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--texto-tenue);
+}
+
+.recibo__total-valor {
+    font-family: var(--fuente-display);
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--acento);
+}
+
+.mensaje-vacio {
+    text-align: center;
+    color: var(--texto-tenue);
+    font-size: 13px;
+    margin: 24px 0;
+}
