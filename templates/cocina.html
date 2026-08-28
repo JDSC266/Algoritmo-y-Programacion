@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cocina · {{ config.nombre_tienda or "Pedidos" }}{% endblock %}
+
+{% block head_extra %}
+<meta http-equiv="refresh" content="8">
+{% endblock %}
+
+{% block contenido %}
+<div class="pagina-cocina">
+
+    <div class="encabezado-cocina">
+        <h1 class="encabezado-cocina__titulo">{{ config.nombre_tienda or "Cocina" }} · Pedidos</h1>
+        <a href="{{ url_for('cocina_logout') }}" class="encabezado-cocina__link">Cerrar sesión</a>
+    </div>
+
+    {% set pendientes = pedidos|selectattr('estado', 'equalto', 'pendiente')|list %}
+    {% set en_preparacion = pedidos|selectattr('estado', 'equalto', 'en_preparacion')|list %}
+    {% set listos = pedidos|selectattr('estado', 'equalto', 'listo')|list %}
+    {% set entregados = pedidos|selectattr('estado', 'equalto', 'entregado')|list %}
+
+    <div class="tablero">
+
+        <div class="columna">
+            <p class="columna__titulo">Pendientes <span class="columna__contador">{{ pendientes|length }}</span></p>
+            {% if pendientes %}
+                {% for pedido in pendientes %}
+                <div class="ticket ticket--pendiente">
+                    <div class="ticket__cabecera">
+                        <span class="ticket__mesa">Mesa {{ pedido.mesa_numero }}</span>
+                        <span class="ticket__hora">{{ pedido.fecha }}</span>
+                    </div>
+                    <ul class="ticket__items">
+                        {% for item in pedido['items'] %}
+                        <li>
+                            <span>
+                                {{ item.producto_nombre }}
+                                {% if item.notas %}<span class="ticket__item-notas">{{ item.notas }}</span>{% endif %}
+                            </span>
+                            <span class="ticket__item-cantidad">x{{ item.cantidad }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="post" action="{{ url_for('cambiar_estado_pedido', pedido_id=pedido.id) }}" class="ticket__accion">
+                        <input type="hidden" name="estado" value="en_preparacion">
+                        <button type="submit" class="btn">Marcar en preparación</button>
+                    </form>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="columna-vacia">Sin pedidos pendientes.</p>
+            {% endif %}
+        </div>
+
+        <div class="columna">
+            <p class="columna__titulo">En preparación <span class="columna__contador">{{ en_preparacion|length }}</span></p>
+            {% if en_preparacion %}
+                {% for pedido in en_preparacion %}
+                <div class="ticket">
+                    <div class="ticket__cabecera">
+                        <span class="ticket__mesa">Mesa {{ pedido.mesa_numero }}</span>
+                        <span class="ticket__hora">{{ pedido.fecha }}</span>
+                    </div>
+                    <ul class="ticket__items">
+                        {% for item in pedido['items'] %}
+                        <li>
+                            <span>
+                                {{ item.producto_nombre }}
+                                {% if item.notas %}<span class="ticket__item-notas">{{ item.notas }}</span>{% endif %}
+                            </span>
+                            <span class="ticket__item-cantidad">x{{ item.cantidad }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="post" action="{{ url_for('cambiar_estado_pedido', pedido_id=pedido.id) }}" class="ticket__accion">
+                        <input type="hidden" name="estado" value="listo">
+                        <button type="submit" class="btn">Marcar listo</button>
+                    </form>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="columna-vacia">Nada en preparación.</p>
+            {% endif %}
+        </div>
+
+        <div class="columna">
+            <p class="columna__titulo">Listos <span class="columna__contador">{{ listos|length }}</span></p>
+            {% if listos %}
+                {% for pedido in listos %}
+                <div class="ticket ticket--listo">
+                    <div class="ticket__cabecera">
+                        <span class="ticket__mesa">Mesa {{ pedido.mesa_numero }}</span>
+                        <span class="ticket__hora">{{ pedido.fecha }}</span>
+                    </div>
+                    <ul class="ticket__items">
+                        {% for item in pedido['items'] %}
+                        <li>
+                            <span>
+                                {{ item.producto_nombre }}
+                                {% if item.notas %}<span class="ticket__item-notas">{{ item.notas }}</span>{% endif %}
+                            </span>
+                            <span class="ticket__item-cantidad">x{{ item.cantidad }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="post" action="{{ url_for('cambiar_estado_pedido', pedido_id=pedido.id) }}" class="ticket__accion">
+                        <input type="hidden" name="estado" value="entregado">
+                        <button type="submit" class="btn-plano">Marcar entregado</button>
+                    </form>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="columna-vacia">Nada listo todavía.</p>
+            {% endif %}
+        </div>
+
+        <div class="columna">
+            <p class="columna__titulo">Entregados <span class="columna__contador">{{ entregados|length }}</span></p>
+            {% if entregados %}
+                {% for pedido in entregados %}
+                <div class="ticket">
+                    <div class="ticket__cabecera">
+                        <span class="ticket__mesa">Mesa {{ pedido.mesa_numero }}</span>
+                        <span class="ticket__hora">{{ pedido.fecha }}</span>
+                    </div>
+                    <ul class="ticket__items">
+                        {% for item in pedido['items'] %}
+                        <li>
+                            <span>{{ item.producto_nombre }}</span>
+                            <span class="ticket__item-cantidad">x{{ item.cantidad }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="columna-vacia">Aún ninguno.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
