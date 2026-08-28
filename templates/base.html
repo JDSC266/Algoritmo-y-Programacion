@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}{{ config.nombre_tienda or "Pedidos" }}{% endblock %}</title>
+    {% if config and config.logo_path %}
+    <link rel="icon" href="{{ url_for('static', filename=config.logo_path.split('static/')[-1]) }}">
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    {% block contenido %}{% endblock %}
+</body>
+</html>

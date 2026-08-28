@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block titulo %}Admin · {{ config.nombre_tienda or "Panel" }}{% endblock %}
+
+{% block contenido %}
+<div class="pagina-admin">
+
+    <div class="encabezado-cocina">
+        <h1 class="encabezado-cocina__titulo">{{ config.nombre_tienda or "Admin" }} · Panel</h1>
+        <div style="display:flex; gap:8px;">
+            <a href="{{ url_for('cocina') }}" class="encabezado-cocina__link">Ver cocina</a>
+            <a href="{{ url_for('admin_logout') }}" class="encabezado-cocina__link">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <!-- ===================== CATEGORÍAS ===================== -->
+    <div class="seccion-admin">
+        <h2 class="seccion-admin__titulo">Categorías</h2>
+        <p class="seccion-admin__ayuda">Agrupan los platillos en el menú (ej. Platos fuertes, Bebidas, Postres).</p>
+
+        <div class="grid-categorias">
+            {% for categoria in categorias %}
+            <div class="categoria-admin">
+                <form method="post" action="{{ url_for('admin_categoria_renombrar', categoria_id=categoria.id) }}" style="display:flex; gap:6px;">
+                    <input type="text" name="nombre" value="{{ categoria.nombre }}" required>
+                    <button type="submit" class="btn-mini">Guardar</button>
+                </form>
+                <form method="post" action="{{ url_for('admin_categoria_eliminar', categoria_id=categoria.id) }}" onsubmit="return true;">
+                    <button type="submit" class="btn-mini btn-mini--peligro">Eliminar</button>
+                </form>
+            </div>
+            {% else %}
+            <p class="columna-vacia">Todavía no hay categorías. Crea la primera abajo.</p>
+            {% endfor %}
+        </div>
+
+        <div class="tarjeta-admin">
+            <form method="post" action="{{ url_for('admin_categoria_nueva') }}" class="form-en-linea">
+                <div class="campo">
+                    <label for="nombre_categoria">Nueva categoría</label>
+                    <input type="text" id="nombre_categoria" name="nombre" placeholder="Ej. Postres" required>
+                </div>
+                <button type="submit" class="btn">Agregar categoría</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================== NUEVO PLATILLO ===================== -->
+    <div class="seccion-admin">
+        <h2 class="seccion-admin__titulo">Agregar platillo</h2>
+
+        {% if categorias %}
+        <div class="tarjeta-admin">
+            <form method="post" action="{{ url_for('admin_producto_nuevo') }}" class="form-en-linea">
+                <div class="campo">
+                    <label for="nombre_producto">Nombre</label>
+                    <input type="text" id="nombre_producto" name="nombre" placeholder="Ej. Hamburguesa" required>
+                </div>
+                <div class="campo">
+                    <label for="precio_producto">Precio</label>
+                    <input type="number" id="precio_producto" name="precio" min="0" step="100" placeholder="18000" required>
+                </div>
+                <div class="campo">
+                    <label for="categoria_producto">Categoría</label>
+                    <select id="categoria_producto" name="categoria_id" required>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn">Agregar platillo</button>
+            </form>
+        </div>
+        {% else %}
+        <p class="seccion-admin__ayuda">Crea al menos una categoría antes de agregar platillos.</p>
+        {% endif %}
+    </div>
+
+    <!-- ===================== PLATILLOS EXISTENTES ===================== -->
+    <div class="seccion-admin">
+        <h2 class="seccion-admin__titulo">Platillos</h2>
+
+        {% if productos %}
+        <div class="tabla-productos">
+            <div class="tabla-productos__cabecera">
+                <span>Nombre</span>
+                <span>Precio</span>
+                <span>Categoría</span>
+                <span>Disp.</span>
+                <span></span>
+                <span></span>
+            </div>
+
+            {% for producto in productos %}
+            <div class="fila-producto">
+                <form method="post" action="{{ url_for('admin_producto_editar', producto_id=producto.id) }}" class="fila-producto__form">
+                    <div class="campo-movil">
+                        <label class="etiqueta-movil">Nombre</label>
+                        <input type="text" name="nombre" value="{{ producto.nombre }}" required>
+                    </div>
+                    <div class="campo-movil">
+                        <label class="etiqueta-movil">Precio</label>
+                        <input type="number" name="precio" value="{{ producto.precio|int }}" min="0" step="100" required>
+                    </div>
+                    <div class="campo-movil">
+                        <label class="etiqueta-movil">Categoría</label>
+                        <select name="categoria_id">
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria_id %}selected{% endif %}>{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="campo-movil">
+                        <label class="etiqueta-movil">Disponible</label>
+                        <input type="checkbox" name="disponible" {% if producto.disponible %}checked{% endif %}>
+                    </div>
+                    <button type="submit" class="btn-mini">Guardar</button>
+                </form>
+                <form method="post" action="{{ url_for('admin_producto_eliminar', producto_id=producto.id) }}">
+                    <button type="submit" class="btn-mini btn-mini--peligro">Eliminar</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="seccion-admin__ayuda">Todavía no hay platillos registrados.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
