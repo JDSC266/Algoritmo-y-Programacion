@@ -1,0 +1,413 @@
+/* =========================================================
+   estilo.css
+   Identidad visual: "comanda de cocina" — el ticket de papel
+   que recibe el cocinero. Fondo oscuro tipo cocina de noche,
+   acento ámbar como la luz de "pedido listo".
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root {
+    --bg: #1b1a17;
+    --superficie: #242220;
+    --superficie-2: #2e2b27;
+    --borde: #3a362f;
+
+    --acento: #e2a63b;
+    --acento-tenue: #8c6b26;
+    --error: #e2593f;
+    --exito: #6ea16b;
+
+    --texto: #f3eee3;
+    --texto-tenue: #b4aa9a;
+
+    --fuente-display: 'Fraunces', serif;
+    --fuente-cuerpo: 'Work Sans', sans-serif;
+    --fuente-mono: 'IBM Plex Mono', monospace;
+
+    --radio: 4px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(226, 166, 59, 0.05), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(226, 166, 59, 0.04), transparent 40%);
+    color: var(--texto);
+    font-family: var(--fuente-cuerpo);
+}
+
+.pagina-centrada {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+/* ---------------------------------------------------------
+   Elemento firma: tarjeta tipo "comanda" con borde perforado
+   arriba, como si se hubiera arrancado de un bloc de pedidos.
+   --------------------------------------------------------- */
+.comanda {
+    width: 100%;
+    max-width: 420px;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 40px 32px 32px;
+    position: relative;
+}
+
+.comanda::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background-image: radial-gradient(circle at 12px 0, var(--bg) 6px, transparent 6.5px);
+    background-size: 24px 16px;
+    background-repeat: repeat-x;
+}
+
+.comanda__logo {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--borde);
+}
+
+.comanda__eyebrow {
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--acento);
+    text-align: center;
+    margin: 0 0 8px;
+}
+
+.comanda__titulo {
+    font-family: var(--fuente-display);
+    font-weight: 600;
+    font-size: 26px;
+    text-align: center;
+    margin: 0 0 28px;
+    color: var(--texto);
+    line-height: 1.2;
+}
+
+.comanda__titulo span {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--texto-tenue);
+    margin-top: 6px;
+    font-family: var(--fuente-cuerpo);
+}
+
+/* ---------------------------------------------------------
+   Campos de formulario
+   --------------------------------------------------------- */
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--texto-tenue);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+}
+
+.campo input[type="text"],
+.campo input[type="password"],
+.campo input[type="file"] {
+    width: 100%;
+    padding: 11px 12px;
+    background: var(--superficie-2);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    color: var(--texto);
+    font-family: var(--fuente-cuerpo);
+    font-size: 14px;
+}
+
+.campo input[type="file"] {
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--texto-tenue);
+}
+
+.campo input:focus {
+    outline: 2px solid var(--acento);
+    outline-offset: 1px;
+    border-color: var(--acento);
+}
+
+.campo small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--texto-tenue);
+}
+
+/* ---------------------------------------------------------
+   Botón
+   --------------------------------------------------------- */
+.btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--acento);
+    color: #1b1a17;
+    border: none;
+    border-radius: var(--radio);
+    font-family: var(--fuente-cuerpo);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    margin-top: 4px;
+}
+
+.btn:hover {
+    background: #eeb753;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--texto);
+    outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------
+   Mensaje de error
+   --------------------------------------------------------- */
+.mensaje-error {
+    background: rgba(226, 89, 63, 0.12);
+    border: 1px solid var(--error);
+    color: #f2b3a4;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: var(--radio);
+    margin-bottom: 18px;
+}
+
+/* ---------------------------------------------------------
+   Pie de la comanda (numeración tipo ticket, decorativo)
+   --------------------------------------------------------- */
+.comanda__pie {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--borde);
+    text-align: center;
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    color: var(--texto-tenue);
+    letter-spacing: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn {
+        transition: none;
+    }
+}
+
+/* ===========================================================
+   MENÚ DEL CLIENTE
+   =========================================================== */
+
+.pagina-menu {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 16px 120px;
+}
+
+.banner-exito {
+    background: rgba(110, 161, 107, 0.12);
+    border: 1px solid var(--exito);
+    color: #cfe8cd;
+    font-size: 13px;
+    padding: 12px 14px;
+    border-radius: var(--radio);
+    margin-bottom: 20px;
+    font-family: var(--fuente-mono);
+    letter-spacing: 0.02em;
+}
+
+.encabezado-menu {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.encabezado-menu img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--borde);
+}
+
+.encabezado-menu__nombre {
+    font-family: var(--fuente-display);
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.encabezado-menu__mesa {
+    display: inline-block;
+    margin-top: 12px;
+    margin-bottom: 28px;
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--acento);
+    background: rgba(226, 166, 59, 0.1);
+    border: 1px solid var(--acento-tenue);
+    padding: 5px 10px;
+    border-radius: 999px;
+}
+
+.categoria {
+    margin-bottom: 32px;
+}
+
+.categoria__titulo {
+    font-family: var(--fuente-display);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--texto);
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--borde);
+}
+
+.producto {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+.producto:last-child {
+    border-bottom: none;
+}
+
+.producto__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.producto__nombre {
+    font-weight: 500;
+    font-size: 15px;
+    margin: 0 0 4px;
+}
+
+.producto__precio {
+    font-family: var(--fuente-mono);
+    font-size: 13px;
+    color: var(--acento);
+    margin: 0 0 8px;
+}
+
+.producto__notas {
+    width: 100%;
+    padding: 7px 10px;
+    background: var(--superficie-2);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    color: var(--texto);
+    font-family: var(--fuente-cuerpo);
+    font-size: 12px;
+}
+
+.producto__notas::placeholder {
+    color: var(--texto-tenue);
+}
+
+.producto__notas:focus {
+    outline: 2px solid var(--acento);
+    outline-offset: 1px;
+    border-color: var(--acento);
+}
+
+.producto__cantidad {
+    width: 64px;
+    flex-shrink: 0;
+    padding: 8px 6px;
+    text-align: center;
+    background: var(--superficie-2);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    color: var(--texto);
+    font-family: var(--fuente-mono);
+    font-size: 15px;
+}
+
+.producto__cantidad:focus {
+    outline: 2px solid var(--acento);
+    outline-offset: 1px;
+    border-color: var(--acento);
+}
+
+.barra-envio {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--superficie);
+    border-top: 1px solid var(--borde);
+    padding: 14px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.barra-envio__interior {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    gap: 12px;
+}
+
+.barra-envio .btn {
+    margin-top: 0;
+}
+
+.btn-secundario {
+    background: transparent;
+    color: var(--texto);
+    border: 1px solid var(--borde);
+    padding: 12px 18px;
+    border-radius: var(--radio);
+    font-family: var(--fuente-cuerpo);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.btn-secundario:hover {
+    border-color: var(--acento);
+    color: var(--acento);
+}

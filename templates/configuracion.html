@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block titulo %}Configuración inicial{% endblock %}
+
+{% block contenido %}
+<div class="pagina-centrada">
+<div class="comanda">
+    <p class="comanda__eyebrow">Primer uso</p>
+    <h1 class="comanda__titulo">
+        Configura tu restaurante
+        <span>Esto solo se pide una vez. Podrás cambiarlo después desde el panel.</span>
+    </h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="campo">
+            <label for="nombre_tienda">Nombre del restaurante</label>
+            <input type="text" id="nombre_tienda" name="nombre_tienda" required>
+        </div>
+
+        <div class="campo">
+            <label for="logo">Logo (se usa como ícono del sitio)</label>
+            <input type="file" id="logo" name="logo" accept=".ico,.png">
+            <small>Formato .ico recomendado. Opcional por ahora.</small>
+        </div>
+
+        <div class="campo">
+            <label for="clave_admin">Clave del panel de administración</label>
+            <input type="password" id="clave_admin" name="clave_admin" required>
+            <small>Da acceso a platillos, precios y categorías.</small>
+        </div>
+
+        <div class="campo">
+            <label for="clave_cocina">Clave del panel de cocina</label>
+            <input type="password" id="clave_cocina" name="clave_cocina" required>
+            <small>Solo muestra los pedidos entrantes. Compártela con meseros y cocina.</small>
+        </div>
+
+        <button type="submit" class="btn">Guardar y continuar</button>
+    </form>
+
+    <p class="comanda__pie">Paso 1 de 1</p>
+</div>
+</div>
+{% endblock %}

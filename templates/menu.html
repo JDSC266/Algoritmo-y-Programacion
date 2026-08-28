@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block titulo %}Mesa {{ mesa.numero }} · {{ config.nombre_tienda or "Menú" }}{% endblock %}
+
+{% block contenido %}
+<div class="pagina-menu">
+
+    {% if pedido_enviado %}
+    <div class="banner-exito">✓ Pedido enviado a cocina. Puedes seguir agregando más si quieres.</div>
+    {% endif %}
+
+    <div class="encabezado-menu">
+        {% if config and config.logo_path %}
+        <img src="{{ url_for('static', filename=config.logo_path.split('static/')[-1]) }}" alt="Logo">
+        {% endif %}
+        <h1 class="encabezado-menu__nombre">{{ config.nombre_tienda or "Menú" }}</h1>
+    </div>
+    <span class="encabezado-menu__mesa">Mesa {{ mesa.numero }}</span>
+
+    {% if productos %}
+    <form method="post" action="{{ url_for('hacer_pedido', numero=mesa.numero) }}">
+        {% for categoria_nombre, items in productos|groupby('categoria_nombre') %}
+        <div class="categoria">
+            <h2 class="categoria__titulo">{{ categoria_nombre }}</h2>
+
+            {% for producto in items %}
+            <div class="producto">
+                <div class="producto__info">
+                    <p class="producto__nombre">{{ producto.nombre }}</p>
+                    <p class="producto__precio">{{ producto.precio|moneda }}</p>
+                    <input type="hidden" name="producto_id" value="{{ producto.id }}">
+                    <input type="text" name="notas" class="producto__notas" placeholder="Notas (ej. sin cebolla)">
+                </div>
+                <input type="number" name="cantidad" class="producto__cantidad" value="0" min="0" max="20" inputmode="numeric" aria-label="Cantidad de {{ producto.nombre }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        <div class="barra-envio">
+            <div class="barra-envio__interior">
+                <a href="{{ url_for('cuenta', numero=mesa.numero) }}" class="btn-secundario">Ver cuenta</a>
+                <button type="submit" class="btn">Enviar pedido a cocina</button>
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <p>Todavía no hay platillos disponibles. Vuelve a intentarlo en un momento.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

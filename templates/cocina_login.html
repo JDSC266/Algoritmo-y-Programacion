@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block titulo %}Acceso cocina{% endblock %}
+
+{% block contenido %}
+<div class="pagina-centrada">
+<div class="comanda">
+    {% if config and config.logo_path %}
+    <img class="comanda__logo" src="{{ url_for('static', filename=config.logo_path.split('static/')[-1]) }}" alt="Logo">
+    {% endif %}
+
+    <p class="comanda__eyebrow">Cocina</p>
+    <h1 class="comanda__titulo">
+        {{ config.nombre_tienda or "Panel de cocina" }}
+        <span>Aquí llegan los pedidos de las mesas en tiempo real.</span>
+    </h1>
+
+    {% if error %}
+    <div class="mensaje-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <div class="campo">
+            <label for="clave">Clave de cocina</label>
+            <input type="password" id="clave" name="clave" autofocus required>
+        </div>
+        <button type="submit" class="btn">Entrar</button>
+    </form>
+
+    <p class="comanda__pie">Compartida con meseros y cocina</p>
+</div>
+</div>
+{% endblock %}
